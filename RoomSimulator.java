@@ -16,5 +16,17 @@ public class RoomSimulator {
 
         System.out.print("部屋の大きさは何畳半:");
         tatami = stdIn.nextInt();
+
+        Room room = new Room(tatami);
+
+        if(room.isSpreadable()){
+            room.makeTatami();
+            System.out.println("畳の情報:");
+            room.displayTatamiInfo();
+            System.out.println("部屋の図は:");
+            room.tatamiDisplay();
+        }else{
+            System.out.println("畳を正方形に敷くことができません。");
+        }
     }
 }
