@@ -12,7 +12,6 @@ class Tatami {
     private int id;
     private int[] place;
     private int direction;
-
     
     Tatami(int id, int[] place, int dir){
         this.id = id;
