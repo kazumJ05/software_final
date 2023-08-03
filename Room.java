@@ -213,7 +213,108 @@
         return j;
     }
 
-    Tatami tatamiConnector(Tatami a, Tatami b){ //畳を完成させる
+    void tatamiDisplay(){ //表示
+        String[] lines = {"******", "*", " ", "  ", "    ", "     *","&"};
+        int j = this.determineLines();
+        int tatamiCount = 0;
+        int middleCount = 0;
+        int rowIn = 0;
+
+        for(int i = 0; i < 4 * j + 3; i++){
+            if (i % 2 == 0){ //文字以外の行
+                if(i == 0 || i == 4 * j + 2){
+                    for(int k = 0; k < 2 * j + 1; k++){
+                        System.out.print(lines[0]);
+                    }
+                    System.out.print(lines[1]);
+                }else{
+                    for(int k = 0; k <= 2 * j + 1; k++){
+                        if(k == 0){
+                            System.out.print(lines[1]);
+                        }else{
+                            int changer = 5;
+
+                            if(VSCounting[middleCount] == 1 || VSCounting[middleCount] == 2){
+                                changer = 0;
+                                
+                            }
+                            
+                            System.out.print(lines[changer]);
+                            middleCount++;
+                        }
+
+                        if(k == 2 * j + 1){
+                            tatamiCount++;
+                        }
+
+                    }
+                }
+            }else{ //文字を含む行
+                for(int k = 0; k <= 8 * j + 4; k++){
+                    if(k % 2 != 0){
+                        System.out.print(lines[3]);
+                    }else{
+                        if(k == 0 || k == 8 * j + 4){
+                            System.out.print(lines[1]);
+                            rowIn = 0;
+                        }else{
+                            if(rowIn == 0){ //文字
+                                if(i == 2 * j + 1 && k == 4 * j + 2){
+                                    System.out.print(lines[6]);
+                                }else{
+                                    System.out.print(maked[tatamiCount].displayID());
+                                }
+                                rowIn++;
+                            }else{//アスタリスク入るか空白
+
+                                int changer = 2;
+
+                                if(HSCounting[tatamiCount] == 1){
+                                    changer = 1;
+                                }
+                                
+                                System.out.print(lines[changer]);
+                                rowIn = 0;
+                                tatamiCount++;
+                            }
+                        }
+                    }
+                }
+            }
+            System.out.println();
+        }
+    }
+
+    void displayTatamiInfo(){
+        Tatami[] connected = new Tatami[tatamiNum];
+        Tatami[] sortCreate = new Tatami[tatamiNum * 2 + 1];
+        int call = 0;
+
+        for(int i = 0; i < tatamiNum * 2 + 1; i++){
+            sortCreate[i] = maked[i];
+        }
+
+        for(int i = 0; i < sortCreate.length - 1; i++){
+            for(int j = sortCreate.length - 1; j > i; j--){
+                if(sortCreate[j - 1].getID() > sortCreate[j].getID()){
+                    Tatami changer = sortCreate[j];
+                    sortCreate[j] = sortCreate[j- 1];
+                    sortCreate[j - 1] = changer;
+                }
+            }
+        }
+        
+        for(int i = 0; i < tatamiNum; i++){
+            connected[i] = tatamiConnector(sortCreate[call], sortCreate[call + 1]);
+            call += 2;
+        }
+
+        for(int i = 0; i < connected.length; i++){
+            System.out.println(connected[i].toString());
+        }
+    }
+
+    Tatami tatamiConnector(Tatami a, Tatami b){
         a.getPlace()[2] = b.getPlace()[0];
         a.getPlace()[3] = b.getPlace()[1];
         return a;
