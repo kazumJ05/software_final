@@ -212,4 +212,10 @@
         }
         return j;
     }
+
+    Tatami tatamiConnector(Tatami a, Tatami b){ //畳を完成させる
+        a.getPlace()[2] = b.getPlace()[0];
+        a.getPlace()[3] = b.getPlace()[1];
+        return a;
+    }
  }
